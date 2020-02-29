@@ -1,28 +1,38 @@
 import React from "react";
 import { View, Text, StyleSheet, Button } from "react-native";
+import { CATEGORIES } from "../data/dummy-data";
 
 const CategoryMealScreen = (props) => {
+  const catId = props.navigation.getParam("categoryId");
+  const selectedCategory = CATEGORIES.find((cat) => cat.id === catId);
+
   return (
     <View style={styles.screen}>
       <Text>The Category Meal Screen!</Text>
+      <Text>{selectedCategory.title}</Text>
       <Button
         title="Go to Details"
         onPress={() => {
-          props.navigation.navigate({ routeName: "CategoryMeals" });
-          // props.navigation.push("Categories");
-          //push useful to go to a page you're already on, change contents on same screen
-          //.replace() takes you to screen and empties stack, no back button
+          props.navigation.navigate({ routeName: "MealDetail" });
         }}
       />
       <Button
         title="Go Back"
         onPress={() => {
-          props.navigation.goBack();
+          props.navigation.pop();
           //pop() pops current button off stack, when you're in stack
         }}
       />
     </View>
   );
+};
+
+CategoryMealScreen.navigationOptions = (navigationData) => {
+  const catId = navigationData.navigation.getParam("categoryId");
+  const selectedCategory = CATEGORIES.find((cat) => cat.id === catId);
+  return {
+    headerTitle: selectedCategory.title
+  };
 };
 
 const styles = StyleSheet.create({
